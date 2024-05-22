@@ -1,19 +1,19 @@
 name: Shell Globbing
-description: Creates a comma separated list of files matching the specified pattern.
+description: Creates a JSON array of files matching the specified pattern.
 inputs:
   pattern:
     description: The pattern to one or more files that will be globbed.
     required: true
 outputs:
   result:
-    description: A comma separated list of files matching the specified pattern.
+    description: A JSON array of files matching the specified pattern.
     value: ${{ steps.run.outputs.result }}
 runs:
   using: composite
   steps:
     - run: |
         shopt -s globstar extglob
-        result=""
+        result="[]"
         for match in ${{ inputs.pattern }}; do
           if [ -z "$result" ]; then
             result="$match"
@@ -21,6 +21,7 @@ runs:
             result="$result, $match"
           fi
         done
+        result="[${result}]"
         echo "result=$result" >> $GITHUB_OUTPUT
       shell: bash
 branding:
