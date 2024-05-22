@@ -13,7 +13,7 @@ runs:
   steps:
     - run: |
         shopt -s globstar extglob
-        result="[]"
+        result=""
         for match in ${{ inputs.pattern }}; do
           if [ -z "$result" ]; then
             result="$match"
