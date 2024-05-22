@@ -1,0 +1,28 @@
+name: Shell Globbing
+description: Creates a comma separated list of files matching the specified pattern.
+inputs:
+  path:
+    description: The path to one or more files that will be globbed.
+    required: true
+outputs:
+  result:
+    description: A comma separated list of files matching the specified pattern.
+    value: ${{ steps.run.outputs.result }}
+runs:
+  using: composite
+  steps:
+    - run: |
+        shopt -s globstar extglob
+        result=""
+        for match in ${{ inputs.path }}; do
+          if [ -z "$result" ]; then
+            result="$match"
+          else
+            result="$result, $match"
+          fi
+        done
+        echo "result=$result" >> $GITHUB_OUTPUT
+      shell: bash
+branding:
+  icon: 'umbrella'
+  color: 'blue'
