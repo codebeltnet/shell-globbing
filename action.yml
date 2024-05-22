@@ -7,11 +7,12 @@ inputs:
 outputs:
   result:
     description: A JSON array of files matching the specified pattern.
-    value: ${{ steps.run.outputs.result }}
+    value: ${{ steps.globbing.outputs.result }}
 runs:
   using: composite
   steps:
-    - run: |
+    - id: globbing
+      run: |
         shopt -s globstar extglob
         result=""
         for match in ${{ inputs.pattern }}; do
