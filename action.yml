@@ -16,9 +16,9 @@ runs:
         result=""
         for match in ${{ inputs.pattern }}; do
           if [ -z "$result" ]; then
-            result="$match"
+            result="\"$match\""
           else
-            result="$result, $match"
+            result="$result, \"$match\""
           fi
         done
         result="[${result}]"
