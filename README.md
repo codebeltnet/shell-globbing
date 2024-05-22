@@ -26,7 +26,7 @@ uses: codebeltnet/shell-globbing@v1
 ```yaml
 with:
   # Defines the path to one or more files that will be globbed.
-  path:
+  pattern:
 ```
 
 ### Outputs
@@ -46,7 +46,7 @@ steps:
   - name: Fetch list of files
     uses: codebeltnet/shell-globbing@v1
     with:
-      path: test/**/*.csproj
+      pattern: test/**/*.csproj
 ```
 
 ## Contributing to Shell Globbing

@@ -1,8 +1,8 @@
 name: Shell Globbing
 description: Creates a comma separated list of files matching the specified pattern.
 inputs:
-  path:
-    description: The path to one or more files that will be globbed.
+  pattern:
+    description: The pattern to one or more files that will be globbed.
     required: true
 outputs:
   result:
@@ -14,7 +14,7 @@ runs:
     - run: |
         shopt -s globstar extglob
         result=""
-        for match in ${{ inputs.path }}; do
+        for match in ${{ inputs.pattern }}; do
           if [ -z "$result" ]; then
             result="$match"
           else
