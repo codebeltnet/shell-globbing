@@ -1,4 +1,4 @@
-# NuGet Push
+# Shell Globbing
 
 Uses the Shopt Builtin `shopt -s globstar extglob` [command](https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html) to create a comma separated list of files matching the specified pattern.
 
@@ -76,5 +76,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 :bookmark: [Git Checkout](https://github.com/codebeltnet/git-checkout)\
 :bookmark: [MinVer Calculate](https://github.com/codebeltnet/minver-calculate)\
 :bookmark: [NuGet Push](https://github.com/codebeltnet/nuget-push)\
+:bookmark: [Shell Globbing](https://github.com/codebeltnet/shell-globbing)\
 :bookmark: [Analyze with SonarCloud](https://github.com/codebeltnet/sonarcloud-scan)\
 :bookmark: [Finalyze with SonarCloud](https://github.com/codebeltnet/sonarcloud-scan-finalize)
