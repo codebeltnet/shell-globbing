@@ -13,17 +13,56 @@ runs:
   steps:
     - id: globbing
       run: |
-        shopt -s globstar extglob
-        result=""
-        for match in ${{ inputs.pattern }}; do
-          if [ -z "$result" ]; then
-            result="\"$match\""
+        shopt -s globstar extglob nullglob
+        
+        # Save pattern input to file, handle multiline
+        echo "${{ inputs.pattern }}" > patterns.txt
+
+        # Separate include and exclude patterns
+        include_patterns=()
+        exclude_patterns=()
+        while IFS= read -r line; do
+          trimmed=$(echo "$line" | xargs) # trim whitespace
+          if [[ -z "$trimmed" ]]; then continue; fi
+          if [[ "$trimmed" == !* ]]; then
+            exclude_patterns+=("${trimmed:1}")
           else
-            result="$result, \"$match\""
+            include_patterns+=("$trimmed")
           fi
+        done < patterns.txt
+
+        files=()
+        for pat in "${include_patterns[@]}"; do
+          for f in $pat; do
+            files+=("$f")
+          done
         done
-        result="[${result}]"
-        echo "result=$result" >> $GITHUB_OUTPUT
+
+        # Remove excluded files
+        for pat in "${exclude_patterns[@]}"; do
+          for ((i=${#files[@]}-1; i>=0; i--)); do
+            if [[ "${files[$i]}" == $pat ]]; then
+              unset 'files[i]'
+            fi
+          done
+        done
+
+        # Remove duplicates and build JSON array
+        unique_files=()
+        for f in "${files[@]}"; do
+          [[ " ${unique_files[*]} " == *" $f "* ]] || unique_files+=("$f")
+        done
+
+        # Produce JSON
+        json="["
+        sep=""
+        for f in "${unique_files[@]}"; do
+          json+="${sep}\"$f\""
+          sep=","
+        done
+        json+="]"
+
+        echo "result=$json" >> $GITHUB_OUTPUT
       shell: bash
 branding:
   icon: 'umbrella'
